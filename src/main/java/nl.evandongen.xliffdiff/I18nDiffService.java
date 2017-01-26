@@ -1,10 +1,13 @@
 package nl.evandongen.xliffdiff;
 
-import ch.qos.logback.classic.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.slf4j.LoggerFactory;
+import nl.evandongen.xliffdiff.pojo.DiffResult;
+import nl.evandongen.xliffdiff.pojo.DiffResultAdded;
+import nl.evandongen.xliffdiff.pojo.DiffResultRemoved;
+import nl.evandongen.xliffdiff.pojo.I18nMessages;
+import nl.evandongen.xliffdiff.pojo.I18nTransUnit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,17 +25,10 @@ import java.util.regex.Pattern;
  */
 public class I18nDiffService {
 
-	private static Logger logger = (Logger) LoggerFactory.getLogger(I18nDiffService.class);
-
-	public DiffResult compareFiles(String latest, String other) {
+	public DiffResult compareFiles(InputStream latestFile, InputStream otherFile) {
 		XmlMapper xmlMapper = new XmlMapper();
 
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-
-			File latestFile = new File(classLoader.getResource(latest).getFile());
-			File otherFile = new File(classLoader.getResource(other).getFile());
-
 			I18nMessages latestI18n = getMessagesFromFile(latestFile, xmlMapper);
 			I18nMessages otherI18n = getMessagesFromFile(otherFile, xmlMapper);
 
@@ -43,7 +39,7 @@ public class I18nDiffService {
 			return diffResult;
 
 		} catch (IOException ioe) {
-			logger.error("Error while reading xml files: " + ioe);
+			System.out.println("Error while reading xml files: " + ioe);
 			ioe.printStackTrace();
 		}
 
@@ -86,7 +82,7 @@ public class I18nDiffService {
 		try {
 			String output = xmlMapper.writeValueAsString(diffResult);
 
-			logger.info(decodeInterpolation(output));
+			System.out.println(decodeInterpolation(output));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -95,13 +91,12 @@ public class I18nDiffService {
 	/**
 	 * Reads the given file and tries to map it to a POJO
 	 *
-	 * @param file
+	 * @param inputStream
 	 * @param xmlMapper
 	 * @return
 	 * @throws IOException
 	 */
-	private I18nMessages getMessagesFromFile(File file, XmlMapper xmlMapper) throws IOException {
-		InputStream inputStream = new FileInputStream(file);
+	private I18nMessages getMessagesFromFile(InputStream inputStream, XmlMapper xmlMapper) throws IOException {
 		StringBuilder stringBuilder = new StringBuilder();
 		String line;
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

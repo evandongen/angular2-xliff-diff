@@ -1,4 +1,4 @@
-package nl.evandongen.xliffdiff;
+package nl.evandongen.xliffdiff.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;

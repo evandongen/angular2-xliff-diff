@@ -1,4 +1,4 @@
-package nl.evandongen.xliffdiff;
+package nl.evandongen.xliffdiff.pojo;
 
 /**
  * Result class to contain the added and removed items.

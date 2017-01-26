@@ -1,7 +1,10 @@
 package nl.evandongen.xliffdiff;
 
+import nl.evandongen.xliffdiff.pojo.DiffResult;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
 
 public class DiffServiceTest {
 
@@ -9,7 +12,9 @@ public class DiffServiceTest {
 	public void testDiffService() {
 		I18nDiffService i18nDiffService = new I18nDiffService();
 
-		DiffResult diffResult = i18nDiffService.compareFiles("messages.latest.test.xlf", "messages.previous.test.xlf");
+		DiffResult diffResult = i18nDiffService.compareFiles(
+				getClass().getResourceAsStream("messages.latest.test.xlf"),
+				getClass().getResourceAsStream("messages.previous.test.xlf"));
 
 		Assert.assertEquals(diffResult.getDiffResultAdded().getAdded().size(), 2);
 		Assert.assertEquals(diffResult.getDiffResultRemoved().getRemoved().size(), 1);
