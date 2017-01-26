@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="ng2.template">
+		<body>
+			<!-- Unchanged translation units -->
+			<trans-unit id="d8b6332a71702cfa4e832cf16632a0468e580c39" datatype="html">
+				<source>E-mail</source>
+				<target/>
+				<note priority="1" from="description">Login form: e-mail label</note>
+			</trans-unit>
+			<trans-unit id="0a50e6e5faf06db3886f36bea69c78eed8818905" datatype="html">
+				<source>Password</source>
+				<target/>
+				<note priority="1" from="description">Login form: password label</note>
+			</trans-unit>
+
+			<!-- Removed translation unit -->
+			<trans-unit id="3a8e04b34236be1cb450987973bcb7b33d483e35" datatype="html">
+				<source>Forgot password?</source>
+				<target/>
+				<note priority="1" from="description">forgot password</note>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

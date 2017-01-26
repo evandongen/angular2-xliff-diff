@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="ng2.template">
+		<body>
+			<!-- Unchanged translation units -->
+			<trans-unit id="d8b6332a71702cfa4e832cf16632a0468e580c39" datatype="html">
+				<source>E-mail</source>
+				<target/>
+				<note priority="1" from="description">Login form: e-mail label</note>
+			</trans-unit>
+			<trans-unit id="0a50e6e5faf06db3886f36bea69c78eed8818905" datatype="html">
+				<source>Password</source>
+				<target/>
+				<note priority="1" from="description">Login form: password label</note>
+			</trans-unit>
+
+			<!-- New translation units -->
+			<trans-unit id="575898911c3911b6e5807d09e21cadfffc5f6664" datatype="html">
+				<source>Please enter an e-mailadress</source>
+				<target/>
+				<note priority="1" from="description">Validation error: enter e-mail</note>
+			</trans-unit>
+			<trans-unit id="43e73a43a7f6d10f72fe50d3ef3e489833ab170f" datatype="html">
+				<source>Please enter a valid e-mailadress</source>
+				<target/>
+				<note priority="1" from="description">Validation error: enter valid e-mail</note>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>
