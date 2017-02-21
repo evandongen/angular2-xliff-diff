@@ -14,6 +14,13 @@
 				<note priority="1" from="description">Login form: password label</note>
 			</trans-unit>
 
+			<!-- changed unit -->
+			<trans-unit id="bbd34d951d5a997f14e0c81bd3abec9878ef207b" datatype="html">
+				<source>Submit form</source>
+				<target/>
+				<note priority="1" from="description">Login form: submit button</note>
+			</trans-unit>
+
 			<!-- Removed translation unit -->
 			<trans-unit id="3a8e04b34236be1cb450987973bcb7b33d483e35" datatype="html">
 				<source>Forgot password?</source>

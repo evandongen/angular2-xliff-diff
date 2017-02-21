@@ -13,10 +13,11 @@ public class DiffServiceTest {
 		I18nDiffService i18nDiffService = new I18nDiffService();
 
 		DiffResult diffResult = i18nDiffService.compareFiles(
-				getClass().getResourceAsStream("messages.latest.test.xlf"),
-				getClass().getResourceAsStream("messages.previous.test.xlf"));
+				getClass().getResourceAsStream("/messages.latest.test.xlf"),
+				getClass().getResourceAsStream("/messages.previous.test.xlf"));
 
 		Assert.assertEquals(diffResult.getDiffResultAdded().getAdded().size(), 2);
+		Assert.assertEquals(diffResult.getDiffResultChanged().getChanged().size(), 1);
 		Assert.assertEquals(diffResult.getDiffResultRemoved().getRemoved().size(), 1);
 	}
 

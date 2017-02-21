@@ -154,9 +154,13 @@ public class I18nDiffService {
 							.collect(Collectors.toList());
 				}
 
-				// If there's a match (not usefull if there are more), the key has probably changed
+				// If there's a match (not useful to check any further if there are more), the key has probably changed
 				if (changedUnits != null && !changedUnits.isEmpty() && changedUnits.size() == 1) {
-					changedTranslations.add(new ChangedTransUnit(changedUnits.get(0).getId(), unit.getId()));
+					I18nTransUnit changedUnit = changedUnits.get(0);
+					changedTranslations.add(new ChangedTransUnit(changedUnit.getId(), unit.getId()));
+
+					// Make sure to don't export this changed unit as 'removed'
+					removedTranslations.remove(changedUnit);
 				} else {
 
 					// If the item is not present in the other list, this key was added
