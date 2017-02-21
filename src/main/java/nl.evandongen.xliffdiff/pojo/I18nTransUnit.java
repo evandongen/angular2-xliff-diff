@@ -1,11 +1,7 @@
 package nl.evandongen.xliffdiff.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-
-import java.util.List;
 
 /**
  * Example:
@@ -30,10 +26,7 @@ public class I18nTransUnit {
 
 	private String target;
 
-	@JacksonXmlElementWrapper(useWrapping = false)
-	@JsonProperty("note")
-
-	private List<I18nTransUnitNote> notes;
+	private String note;
 
 	public String getDatatype() {
 		return datatype;
@@ -51,12 +44,12 @@ public class I18nTransUnit {
 		this.id = id;
 	}
 
-	public List<I18nTransUnitNote> getNotes() {
-		return notes;
+	public String getNote() {
+		return note;
 	}
 
-	public void setNotes(List<I18nTransUnitNote> notes) {
-		this.notes = notes;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public String getSource() {

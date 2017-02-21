@@ -3,11 +3,14 @@ package nl.evandongen.xliffdiff;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import nl.evandongen.xliffdiff.pojo.ChangedTransUnit;
 import nl.evandongen.xliffdiff.pojo.DiffResult;
 import nl.evandongen.xliffdiff.pojo.DiffResultAdded;
+import nl.evandongen.xliffdiff.pojo.DiffResultChanged;
 import nl.evandongen.xliffdiff.pojo.DiffResultRemoved;
 import nl.evandongen.xliffdiff.pojo.I18nMessages;
 import nl.evandongen.xliffdiff.pojo.I18nTransUnit;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author evandongen
@@ -125,9 +129,11 @@ public class I18nDiffService {
 	 */
 	private DiffResult processMessages(I18nMessages latestI18n, I18nMessages otherI18n) {
 		List<I18nTransUnit> addedMessages = new ArrayList<>();
+		List<ChangedTransUnit> changedTranslations = new ArrayList<>();
+		List<I18nTransUnit> removedTranslations = otherI18n.getI18nMessagesFile().getBody();
 
-		List<I18nTransUnit> latestTranslationUnits = latestI18n.getI18nMessagesFile().getBody();
-		List<I18nTransUnit> otherTranslationUnits = otherI18n.getI18nMessagesFile().getBody();
+		final List<I18nTransUnit> latestTranslationUnits = latestI18n.getI18nMessagesFile().getBody();
+		final List<I18nTransUnit> otherTranslationUnits = otherI18n.getI18nMessagesFile().getBody();
 
 		for (I18nTransUnit unit : latestTranslationUnits) {
 			Optional<I18nTransUnit> itemFound = otherTranslationUnits.stream()
@@ -136,22 +142,43 @@ public class I18nDiffService {
 
 			if (itemFound.isPresent()) {
 				// The item was found. Remove from the list
-				otherTranslationUnits.remove(itemFound.get());
+				removedTranslations.remove(itemFound.get());
 			} else {
-				// If the item is not present in the other list, this key was added
-				addedMessages.add(unit);
+				List<I18nTransUnit> changedUnits = null;
+
+				if (StringUtils.isNotBlank(unit.getNote())) {
+					// Check if the key has changed by finding matches on the note.
+					changedUnits = otherTranslationUnits.stream()
+							.filter(i18nTransUnit -> StringUtils.isNotBlank(i18nTransUnit.getNote())
+									&& i18nTransUnit.getNote().equals(unit.getNote()))
+							.collect(Collectors.toList());
+				}
+
+				// If there's a match (not usefull if there are more), the key has probably changed
+				if (changedUnits != null && !changedUnits.isEmpty() && changedUnits.size() == 1) {
+					changedTranslations.add(new ChangedTransUnit(changedUnits.get(0).getId(), unit.getId()));
+				} else {
+
+					// If the item is not present in the other list, this key was added
+					addedMessages.add(unit);
+				}
 			}
 		}
 
-		if (addedMessages.size() > 0 || otherTranslationUnits.size() > 0) {
+		if (addedMessages.size() > 0 || removedTranslations.size() > 0 || changedTranslations.size() > 0) {
 			DiffResult diffResult = new DiffResult();
 
 			DiffResultAdded diffResultAdded = new DiffResultAdded();
 			diffResultAdded.setAdded(addedMessages);
 			diffResult.setDiffResultAdded(diffResultAdded);
 
+			DiffResultChanged diffResultChanged = new DiffResultChanged();
+			diffResultChanged.setChanged(changedTranslations);
+			diffResult.setDiffResultChanged(diffResultChanged);
+
 			DiffResultRemoved diffResultRemoved = new DiffResultRemoved();
-			diffResultRemoved.setRemoved(otherTranslationUnits);
+			diffResultRemoved.setRemoved(removedTranslations);
+			diffResultRemoved.setRemovedKeys(removedTranslations.stream().map(unit -> unit.getId()).collect(Collectors.toList()));
 			diffResult.setDiffResultRemoved(diffResultRemoved);
 
 			return diffResult;
