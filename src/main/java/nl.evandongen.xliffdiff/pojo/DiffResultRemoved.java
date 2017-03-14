@@ -10,11 +10,21 @@ import java.util.List;
  */
 public class DiffResultRemoved {
 
+	private Integer numberOfItems;
+
 	@JacksonXmlElementWrapper(localName = "removed")
 	@JacksonXmlProperty(localName = "trans-unit")
 	private List<I18nTransUnit> removed;
 
 	private List<String> removedKeys;
+
+	public Integer getNumberOfItems() {
+		return numberOfItems;
+	}
+
+	public void setNumberOfItems(Integer numberOfItems) {
+		this.numberOfItems = numberOfItems;
+	}
 
 	public List<I18nTransUnit> getRemoved() {
 		return removed;

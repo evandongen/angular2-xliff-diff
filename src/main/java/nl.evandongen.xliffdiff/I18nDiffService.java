@@ -173,14 +173,17 @@ public class I18nDiffService {
 			DiffResult diffResult = new DiffResult();
 
 			DiffResultAdded diffResultAdded = new DiffResultAdded();
+			diffResultAdded.setNumberOfItems(addedMessages.size());
 			diffResultAdded.setAdded(addedMessages);
 			diffResult.setDiffResultAdded(diffResultAdded);
 
 			DiffResultChanged diffResultChanged = new DiffResultChanged();
+			diffResultChanged.setNumberOfItems(changedTranslations.size());
 			diffResultChanged.setChanged(changedTranslations);
 			diffResult.setDiffResultChanged(diffResultChanged);
 
 			DiffResultRemoved diffResultRemoved = new DiffResultRemoved();
+			diffResultRemoved.setNumberOfItems(removedTranslations.size());
 			diffResultRemoved.setRemoved(removedTranslations);
 			diffResultRemoved.setRemovedKeys(removedTranslations.stream().map(unit -> unit.getId()).collect(Collectors.toList()));
 			diffResult.setDiffResultRemoved(diffResultRemoved);

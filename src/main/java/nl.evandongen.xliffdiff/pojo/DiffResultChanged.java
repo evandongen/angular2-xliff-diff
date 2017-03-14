@@ -9,6 +9,9 @@ import java.util.List;
  * @author evandongen
  */
 public class DiffResultChanged {
+
+	private Integer numberOfItems;
+
 	@JacksonXmlElementWrapper(localName = "changed")
 	@JacksonXmlProperty(localName = "trans-unit")
 	private List<ChangedTransUnit> changed;
@@ -19,5 +22,13 @@ public class DiffResultChanged {
 
 	public void setChanged(List<ChangedTransUnit> changed) {
 		this.changed = changed;
+	}
+
+	public Integer getNumberOfItems() {
+		return numberOfItems;
+	}
+
+	public void setNumberOfItems(Integer numberOfItems) {
+		this.numberOfItems = numberOfItems;
 	}
 }
