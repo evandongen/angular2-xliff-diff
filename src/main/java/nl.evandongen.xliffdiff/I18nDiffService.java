@@ -7,14 +7,13 @@ import nl.evandongen.xliffdiff.pojo.ChangedTransUnit;
 import nl.evandongen.xliffdiff.pojo.DiffResult;
 import nl.evandongen.xliffdiff.pojo.DiffResultAdded;
 import nl.evandongen.xliffdiff.pojo.DiffResultChanged;
+import nl.evandongen.xliffdiff.pojo.DiffResultModifiedChanged;
 import nl.evandongen.xliffdiff.pojo.DiffResultRemoved;
 import nl.evandongen.xliffdiff.pojo.I18nMessages;
 import nl.evandongen.xliffdiff.pojo.I18nTransUnit;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -124,12 +123,12 @@ public class I18nDiffService {
 	 *
 	 * @param latestI18n
 	 * @param otherI18n
-	 *
 	 * @return DiffResult
 	 */
 	private DiffResult processMessages(I18nMessages latestI18n, I18nMessages otherI18n) {
 		List<I18nTransUnit> addedMessages = new ArrayList<>();
 		List<ChangedTransUnit> changedTranslations = new ArrayList<>();
+		List<String> replaceChangedKeyCommands = new ArrayList<>();
 		List<I18nTransUnit> removedTranslations = otherI18n.getI18nMessagesFile().getBody();
 
 		final List<I18nTransUnit> latestTranslationUnits = latestI18n.getI18nMessagesFile().getBody();
@@ -159,6 +158,9 @@ public class I18nDiffService {
 					I18nTransUnit changedUnit = changedUnits.get(0);
 					changedTranslations.add(new ChangedTransUnit(changedUnit.getId(), unit.getId()));
 
+					replaceChangedKeyCommands.add(String.format("sed -i 's/%s/%s/g' yourfilename.txt",
+							changedUnit.getId(), unit.getId()));
+
 					// Make sure to don't export this changed unit as 'removed'
 					removedTranslations.remove(changedUnit);
 				} else {
@@ -181,6 +183,11 @@ public class I18nDiffService {
 			diffResultChanged.setNumberOfItems(changedTranslations.size());
 			diffResultChanged.setChanged(changedTranslations);
 			diffResult.setDiffResultChanged(diffResultChanged);
+
+			DiffResultModifiedChanged diffResultModifiedChanged = new DiffResultModifiedChanged();
+			diffResultModifiedChanged.setNumberOfItems(replaceChangedKeyCommands.size());
+			diffResultModifiedChanged.setReplaceCommand(replaceChangedKeyCommands);
+			diffResult.setDiffResultModifiedChanged(diffResultModifiedChanged);
 
 			DiffResultRemoved diffResultRemoved = new DiffResultRemoved();
 			diffResultRemoved.setNumberOfItems(removedTranslations.size());

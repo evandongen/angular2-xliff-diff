@@ -16,6 +16,8 @@ public class DiffResult {
 
 	private DiffResultChanged diffResultChanged;
 
+	private DiffResultModifiedChanged diffResultModifiedChanged;
+
 	public DiffResultAdded getDiffResultAdded() {
 		return diffResultAdded;
 	}
@@ -30,6 +32,14 @@ public class DiffResult {
 
 	public void setDiffResultChanged(DiffResultChanged diffResultChanged) {
 		this.diffResultChanged = diffResultChanged;
+	}
+
+	public DiffResultModifiedChanged getDiffResultModifiedChanged() {
+		return diffResultModifiedChanged;
+	}
+
+	public void setDiffResultModifiedChanged(DiffResultModifiedChanged diffResultModifiedChanged) {
+		this.diffResultModifiedChanged = diffResultModifiedChanged;
 	}
 
 	public DiffResultRemoved getDiffResultRemoved() {
