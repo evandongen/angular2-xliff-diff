@@ -33,3 +33,6 @@ When starting with some 'real' translations I noticed a few problems. One of the
 changed content, even for a space or tab. Very annoying. That caused changed items to be displayed in the added and 
 removed output with different keys. I've changed the code to only support ONE note in a trans unit which was already 
 the case in my code.
+
+### Update 17 October 2018
+Updated the dependencies because of Jackson vulnerabilities.
